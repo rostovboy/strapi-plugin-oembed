@@ -28,7 +28,8 @@
     "youtube",
     "vimeo",
     "tiktok",
-    "soundcloud"
+    "soundcloud",
+    "rutube"
   ],
   "peerDependencies": {
     "@strapi/strapi": "^4.4.0"

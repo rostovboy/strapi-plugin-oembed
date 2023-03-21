@@ -54,7 +54,14 @@ module.exports = (
               mime = 'video/tiktok';
               thumbnail = fetchedData.thumbnail_url;
               break;
-          
+            
+            case 'rutube.ru':
+              fetchedData = await axios.get(`https://rutube.ru/api/oembed?url=${encodeURIComponent(url)}&format=json`).then(res => res.data);
+              title = fetchedData.title;
+              mime = 'video/rutube';
+              thumbnail = fetchedData.thumbnail_url;
+              break;
+            
             default:
               break;
           }

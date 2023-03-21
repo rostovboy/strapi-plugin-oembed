@@ -1,6 +1,6 @@
 # Strapi plugin oEmbed
 
-Embed content from third party sites (Youtube, Vimeo, Tiktok, Soundcloud, ...) for https://strapi.io v4 (For strapi v3 use v0.4.0)
+Embed content from third party sites (Youtube, Vimeo, Tiktok, Soundcloud, Rutube, ...) for https://strapi.io v4 (For strapi v3 use v0.4.0)
 
 ![](demo.gif)
 
@@ -86,7 +86,4 @@ If you paste the url `https://www.youtube.com/watch?v=tkiOqSTVGds` in the modal,
 - Vimeo
 - Tiktok
 - Soundcloud
-
-Feel free to submit a PR with the provider you want, you just have to edit this file: `server/services/oembed.js`.
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E0H3N9M)
+- Rutube

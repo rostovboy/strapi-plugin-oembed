@@ -16,7 +16,7 @@ module.exports = (
     async fetch(url) {
       let data;
 
-      const matches = url.match(/^(https?:\/\/)?(www\.)?(youtu\.be|youtube\.com|soundcloud\.com|vimeo\.com|tiktok\.com)/i);
+      const matches = url.match(/^(https?:\/\/)?(www\.)?(youtu\.be|youtube\.com|soundcloud\.com|vimeo\.com|tiktok\.com|rutube\.ru)/i);
 
       if (matches) {
         try {

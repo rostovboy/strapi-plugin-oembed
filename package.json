@@ -1,5 +1,5 @@
 {
-  "name": "strapi-plugin-oembed",
+  "name": "strapi-plugin-sashapop10-oembed",
   "version": "1.0.1",
   "description": "Embed content from third party sites (YouTube, Vimeo, SoundCloud...) in Strapi",
   "strapi": {
@@ -14,10 +14,10 @@
     "name": "Nicolas Hamelin",
     "url": "https://nicolashamelin.fr"
   },
-  "homepage": "https://github.com/nicolashmln/strapi-plugin-oembed",
+  "homepage": "https://github.com/sashapop10/strapi-plugin-oembed",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicolashmln/strapi-plugin-oembed"
+    "url": "https://github.com/sashapop10/strapi-plugin-oembed"
   },
   "keywords": [
     "strapi",

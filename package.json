@@ -6,13 +6,13 @@
     "name": "oembed",
     "displayName": "oEmbed",
     "icon": "globe-asia",
-    "description": "Embed content from third party sites (YouTube, Vimeo, SoundCloud...) in Strapi",
+    "description": "Embed content from third party sites (YouTube, RuTube, Vimeo, SoundCloud...) in Strapi",
     "kind": "plugin"
   },
   "dependencies": {},
   "author": {
-    "name": "Nicolas Hamelin",
-    "url": "https://nicolashamelin.fr"
+    "name": "sashapop10",
+    "url": "https://github.com/sashapop10"
   },
   "homepage": "https://github.com/sashapop10/strapi-plugin-oembed",
   "repository": {

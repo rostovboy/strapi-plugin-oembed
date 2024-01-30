@@ -34,7 +34,7 @@ module.exports = () => ({
   },
 });
 
-strategies["rutube.com"] = {
+strategies["rutube.ru"] = {
   url: (url) => `https://rutube.ru/api/oembed/?url=${enc(url)}/&format=json`,
   pull: () => ({ mime: "video/rutube" }),
 };

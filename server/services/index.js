@@ -1,7 +1,3 @@
 "use strict";
 
-const oembed = require("./oembed");
-
-module.exports = {
-  oembed,
-};
+module.exports = { oembed: require("./oembed") };

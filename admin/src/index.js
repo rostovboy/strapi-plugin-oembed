@@ -1,6 +1,6 @@
-import pluginPkg from '../../package.json';
-import pluginId from './pluginId';
-import { prefixPluginTranslations } from '@strapi/helper-plugin';
+import pluginPkg from "../../package.json";
+import pluginId from "./pluginId";
+import { prefixPluginTranslations } from "@strapi/helper-plugin";
 
 const name = pluginPkg.strapi.name;
 
@@ -9,30 +9,32 @@ export default {
     app.registerPlugin({
       id: pluginId,
       name,
-    })
+    });
 
     app.customFields.register({
       name,
       pluginId,
-      type: 'text',
+      type: "text",
       components: {
-        Input: async () => import(/* webpackChunkName: "input-component" */ "./components/OEmbedField"),
+        Input: async () =>
+          import(
+            /* webpackChunkName: "input-component" */ "./components/OEmbedField"
+          ),
       },
       intlLabel: {
-        id: 'oembed-label',
-        defaultMessage: "oEmbed"
+        id: "oembed-label",
+        defaultMessage: "oEmbed",
       },
       intlDescription: {
-        id: 'oembed-description',
-        defaultMessage: "Add videos from external sources"
-      }
+        id: "oembed-description",
+        defaultMessage: "Add videos from external sources",
+      },
     });
-
   },
   bootstrap(app) {},
   async registerTrads({ locales }) {
     const importedTrads = await Promise.all(
-      locales.map(locale => {
+      locales.map((locale) => {
         return import(
           /* webpackChunkName: "oembed-translations-[request]" */ `./translations/${locale}.json`
         )
@@ -52,5 +54,5 @@ export default {
     );
 
     return Promise.resolve(importedTrads);
-  }
-}
+  },
+};

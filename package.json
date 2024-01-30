@@ -1,12 +1,12 @@
 {
   "name": "strapi-plugin-oembed",
-  "version": "1.0.1",
-  "description": "Embed content from third party sites (YouTube, Vimeo, SoundCloud...) in Strapi",
+  "version": "1.1.0",
+  "description": "Embed content from third party sites (Rutube, YouTube, Vimeo, SoundCloud...) in Strapi",
   "strapi": {
     "name": "oembed",
     "displayName": "oEmbed",
     "icon": "globe-asia",
-    "description": "Embed content from third party sites (YouTube, RuTube, Vimeo, SoundCloud...) in Strapi",
+    "description": "Embed content from third party sites (Rutube, YouTube, Vimeo, SoundCloud, Spotify, CodePen...) in Strapi",
     "kind": "plugin"
   },
   "dependencies": {},
@@ -20,6 +20,7 @@
     "url": "https://github.com/sashapop10/strapi-plugin-oembed"
   },
   "keywords": [
+    "rutube",
     "strapi",
     "plugin",
     "oembed",
@@ -29,13 +30,15 @@
     "vimeo",
     "tiktok",
     "soundcloud",
-    "rutube"
+    "spotify",
+    "codepen",
+    "twitter"
   ],
   "peerDependencies": {
     "@strapi/strapi": "^4.4.0"
   },
   "engines": {
-    "node": ">=14.19.1 <=18.x.x",
+    "node": ">=14.19.1 <= 21.x.x",
     "npm": ">=8.0.0"
   },
   "license": "MIT"

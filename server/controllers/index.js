@@ -2,6 +2,4 @@
 
 const oembed = require("./oembed");
 
-module.exports = {
-  oembed,
-};
+module.exports = { oembed };

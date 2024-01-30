@@ -1,99 +1,79 @@
-'use strict';
-const axios = require('axios');
+//? Fully rewritten by github.com/sashapop10 with rutube support
+"use strict";
 
-/**
- * media-embed.js service
- *
- * @description: A set of functions similar to controller's actions to avoid code duplication.
- */
+const axios = require("axios");
+const enc = encodeURIComponent;
+const strategies = {};
 
-module.exports = (
-  {
-    strapi
-  }
-) => {
-  return {
-    async fetch(url) {
-      let data;
+const pattern =
+  /^(https?:\/\/)?(www\.)?(youtu\.be|youtube\.com|soundcloud\.com|vimeo\.com|tiktok\.com|open\.spotify\.com|twitter\.com|codepen\.io|rutube\.ru)/i;
 
-      const matches = url.match(/^(https?:\/\/)?(www\.)?(youtu\.be|youtube\.com|soundcloud\.com|vimeo\.com|tiktok\.com|rutube\.ru)/i);
+const validate = (url) => url.match(pattern);
+const ERR_DISABLED = "Embedding has been disabled for this media";
+const ERR_NOT_FOUND = "This URL can't be found";
+const ERR_INVALID_URL = "Invalid URL";
 
-      if (matches) {
-        try {
-          let fetchedData;
-          let title;
-          let mime;
-          let thumbnail;
+module.exports = () => ({
+  async fetch(url) {
+    const domain = validate(url);
+    if (!domain) return { error: ERR_INVALID_URL };
+    if (!strategies[domain[3]]) return { error: ERR_INVALID_URL };
+    const { url: host, pull } = strategies[domain[3]];
 
-          switch (matches[3]) {
-            case 'youtu.be':
-            case 'youtube.com':
-              fetchedData = await axios.get(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`).then(res => res.data);
-              title = fetchedData.title;
-              mime = 'video/youtube';
-              thumbnail = fetchedData.thumbnail_url;
-              break;
-            
-            case 'soundcloud.com':
-              fetchedData = await axios.get(`https://www.soundcloud.com/oembed?url=${encodeURIComponent(url)}&format=json`).then(res => res.data);
-              title = fetchedData.title;
-              mime = 'audio/soundcloud';
-              thumbnail = fetchedData.thumbnail_url;
-              break;
-            
-            case 'vimeo.com':
-              fetchedData = await axios.get(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`).then(res => res.data);
-              title = fetchedData.title;
-              mime = 'video/vimeo';
-              thumbnail = fetchedData.thumbnail_url;
-              break;
-
-            case 'tiktok.com':
-              fetchedData = await axios.get(`https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}&format=json`).then(res => res.data);
-              title = fetchedData.title;
-              mime = 'video/tiktok';
-              thumbnail = fetchedData.thumbnail_url;
-              break;
-            
-            case 'rutube.ru':
-              fetchedData = await axios.get(`https://rutube.ru/api/oembed/?url=${encodeURIComponent(url)}/&format=json`).then(res => res.data);
-              title = fetchedData.title;
-              mime = 'video/rutube';
-              thumbnail = fetchedData.thumbnail_url;
-              break;
-            
-            default:
-              break;
-          }
-            
-          data = {
-            url,
-            title,
-            thumbnail,
-            mime,
-            rawData: fetchedData,
-          }
-          
-        } catch (error) {
-          if (error.response.status === 404) {
-            data = {
-              error: 'This URL can\'t be found'
-            }
-          } else if (error.response.status === 401) {
-            data = {
-              error: 'Embedding has been disabled for this media'
-            }
-          } else {
-            throw new Error(error);
-          }
-        }
-      } else {
-        data = {
-          error: 'Invalid URL'
-        }
-      }
-
-      return data;
+    try {
+      const data = await axios.get(host(url)).then((res) => res.data);
+      const { title, thumbnail_url: thumbnail } = data;
+      const preset = { url, title, thumbnail, rawData: data, mime: null };
+      return Object.assign(preset, pull(data));
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 404) return { error: ERR_NOT_FOUND };
+      if (status === 401) return { error: ERR_DISABLED };
+      throw new Error(error);
     }
-  };
+  },
+});
+
+strategies["rutube.com"] = {
+  url: (url) => `https://rutube.ru/api/oembed/?url=${enc(url)}/&format=json`,
+  pull: () => ({ mime: "video/rutube" }),
+};
+
+strategies["youtu.be"] = strategies["youtube.com"] = {
+  url: (url) => `https://www.youtube.com/oembed?url=${enc(url)}&format=json`,
+  pull: () => ({ mime: "video/youtube" }),
+};
+
+strategies["soundcloud.com"] = {
+  url: (url) => `https://www.soundcloud.com/oembed?url=${enc(url)}&format=json`,
+  pull: () => ({ mime: "audio/soundcloud" }),
+};
+
+strategies["vimeo.com"] = {
+  url: (url) => `https://vimeo.com/api/oembed.json?url=${enc(url)}`,
+  pull: () => ({ mime: "video/vimeo" }),
+};
+
+strategies["tiktok.com"] = {
+  url: (url) => `https://www.tiktok.com/oembed?url=${enc(url)}&format=json`,
+  pull: () => ({ mime: "video/tiktok" }),
+};
+
+strategies["open.spotify.com"] = {
+  url: (url) => `https://open.spotify.com/oembed?url=${enc(url)}`,
+  pull: () => ({ mime: "audio/spotify" }),
+};
+
+strategies["codepen.io"] = {
+  url: (url) => `https://codepen.io/api/oembed?format=json&url=${enc(url)}`,
+  pull: () => ({ mime: "application/codepen" }),
+};
+
+strategies["twitter.com"] = {
+  url: (url) => `https://publish.twitter.com/oembed?url=${enc(url)}`,
+  pull: (data) => ({
+    mime: "text/twitter",
+    title: data.author_name,
+    thumbnail: null,
+  }),
 };

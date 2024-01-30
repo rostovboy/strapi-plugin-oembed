@@ -5,8 +5,6 @@ module.exports = [
     method: "GET",
     path: "/fetch",
     handler: "oembed.fetch",
-    config: {
-      policies: [],
-    },
+    config: { policies: [] },
   },
 ];
